@@ -1,0 +1,85 @@
+---
+title       : BMI Index Caculation
+subtitle    : and Implementation in Shiny
+author      : KS
+job         : Data Sci
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : [mathjax, shiny, interactive]            
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## The BMI Index and Formula
+
+1. The BMI stands for body mass index.
+2. It is a measure of relative weight based on an individual's mass and height.
+3. Its mathematical formula is: $$\frac{Weight}{Height^2}$$
+4. If your BMI <= 18.5, you are underweight; if your BMI >= 25, you are overweight; if your BMI is in between, you are normal. 
+
+---
+## Example 1
+Let is compute two BMI Cases in R.
+Case 1: weight is 80, height is 1.75 m
+
+```{r echo =TRUE}
+weight <-80
+height <- 1.75
+BMI <- weight/(height^2)
+print(sprintf("Your BMI is: %.2f", BMI))
+```
+
+
+---
+## Example 2
+Case 2: weight is 90, height is 1.70 m
+
+```{r echo = TRUE}
+weight <-90
+height <- 1.70
+BMI <- weight/(height^2)
+if (BMI > 25) {
+    print(sprintf("Your BMI is: %.2f", BMI))
+    print("You are overweight!")
+    
+}
+```
+
+
+--- &interactive
+
+## Implemented in Shiny
+The following is the actual interactive application in shiny.
+```{r,  opts.label = 'shiny', echo= FALSE}
+slidifyUI(
+    
+    pageWithSidebar(
+        h3("BMI Caculator"),
+        sidebarPanel(
+            numericInput('Weight', 'Weight in kg', 80, min = 20, max = 300, step = 1),
+            numericInput('Height', 'Height in meter', 1.75, min = 0, max = 3, step = 0.01),
+            submitButton('Submit')
+            
+        ),
+        
+        
+        mainPanel(
+            h2('                   '),
+            h2('                   '),
+            h3('Results of Your BMI'),
+            h5('Your Weight entered in Pounds:'),
+            verbatimTextOutput("WeightValue"),
+            h5('Your Height entered in Inches:'),
+            verbatimTextOutput("HeightValue"),
+            h5('Your BMI is:'),
+            verbatimTextOutput("BMI"),
+            h5('Your BMI category is:'),
+            verbatimTextOutput("BMI_message")
+        )
+    )
+)
+
+```
+-----
+
